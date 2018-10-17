@@ -1,0 +1,9 @@
+{
+  "name": "create-confy-app",
+  "dependencies": {
+    "download-file": "^0.1.5",
+    "fs-extra": "^7.0.0",
+    "replace-in-file": "^3.4.2",
+    "unzip": "^0.1.11"
+  }
+}
