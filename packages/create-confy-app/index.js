@@ -1,14 +1,20 @@
 // const replace = require("replace-in-file")
+const {always} = require("ramda")
 const readline = require('readline')
-const unzip = require('unzip')
-const download = require('download-file')
+const download = require('download')
 const fs = require("fs-extra")
+const replace = require('replace-in-file')
+const glob = require("glob")
+const path = require('path')
 
-const version = "v0.0.0"
-const url = `https://github.com/autyzm-pg/friendly-confy/archive/${version}.zip`
+const version = "0.0.0"
+const url = `https://github.com/autyzm-pg/friendly-confy/archive/v${version}.zip`
+const directoryName = `friendly-confy-${version}`
 
-const appNameValidator = value => value !== "a"
+const appNameValidator = value => /^\w+$/.test(value)
 const appNameLowerCaseCreator = variables => Promise.resolve(variables.find(v => v.variable === "app_name").value.toLowerCase())
+
+const trim = x => x.trim()
 
 const setupVariables = [
     {
@@ -28,10 +34,10 @@ const rl = readline.createInterface({
 })
 
 const defaultValidator = () => true
-const defaultCreator = (allVariables, {variable, question, validator = defaultValidator, errorHint = "error: try again"}) =>
+const defaultCreator = (allVariables, {variable, question, validator = defaultValidator, errorHint = "error: try again", processor = trim}) =>
     new Promise((resolve, reject) => {
         (function ask() {
-            rl.question(`${question}: `, value => validator(value) ? resolve(value) : console.log(errorHint) || ask())
+            rl.question(`${question}: `, value => validator(value) ? resolve(processor(value)) : console.log(errorHint) || ask())
         })()
     })
 
@@ -45,26 +51,48 @@ const createdVariablesPromises = setupVariables.reduce((allVariablePromises, var
         }))
 ], [])
 
-Promise.all(createdVariablesPromises)
+const prepareFiles = () => download(url, '.temp', {extract: true, filename: "confy"})
+    .catch(err => console.error("Could not download the template", err))
+
+prepareFiles()
+    .then(() => Promise.all(createdVariablesPromises))
     .then(variables => {
         rl.close()
         return Promise.resolve(variables.reduce((allVariables, v) => ({
             ...allVariables,
-            [v.variable]: {...variable}
+            [v.variable]: {...v}
         }), {}))
     })
-    .then(variables => new Promise(resolve => {
-        download(url, {
-            directory: "./.temp",
-            filename: "confy.zip"
-        }, () => resolve(variables))
-    }))
-    .then(variables => new Promise(resolve =>
-        fs.createReadStream('./temp/confy.zip')
-            .pipe(unzip.Extract({path: './temp/confy'}))
-            .on('close', () => resolve(variables)))
-    )
-    .then(variables => new Promise(resolve =>
-        fs.rename("./temp/confy/packages/template", `./${variables['app_name']}`, () => resolve(variables))
-    ))
+    .then(variables => fs.pathExists(`./${variables['app_name'].value}`)
+        .then(exists => {
+            if (exists) {
+                throw `The project '${variables['app_name'].value}' already exists.`
+            }
+        })
+        .then(() => variables))
+    .then(variables => fs.move(`./.temp/${directoryName}/packages/template`, `./${variables['app_name'].value}`)
+        .then(always(variables)))
+    .then(async variables => {
+        Object.values(variables).forEach(v => replace.sync({
+            files: `./${variables['app_name'].value}/**/*`,
+            from: new RegExp(`{{${v.variable}}}`, 'g'),
+            to: v.value,
+        }))
+
+        await Promise.all(
+            Object.values(variables).map(v => new Promise((resolve, reject) => glob(`./${variables['app_name'].value}/**/{{${v.variable}}}`, (err, files) => {
+                if (err) {
+                    reject(err)
+                }
+                else {
+                    files.forEach(file => fs.moveSync(file, path.join(path.dirname(file), v.value)))
+                    resolve()
+                }
+                reject("Unexpected error")
+            })))
+        )
+    })
+    .then(() => console.log('done'))
+    .catch(err => console.error("Could not create the project.", err))
+    .then(() => fs.remove("./.temp"))
 
