@@ -6,6 +6,19 @@ const fs = require("fs-extra")
 const replace = require('replace-in-file')
 const glob = require("glob")
 const path = require('path')
+const program = require('commander')
+
+program
+    .option('-t, --template <path>', 'Path to template to use instead of the remote repository')
+    .parse(process.argv)
+
+let isBeingKilled = false;
+process.on('exit', () => {
+    if(!isBeingKilled) {
+        isBeingKilled = true;
+        fs.remove("./.temp").then(() => process.exit(0))
+    }
+})
 
 const version = "0.0.0"
 const url = `https://github.com/autyzm-pg/friendly-confy/archive/v${version}.zip`
@@ -52,9 +65,19 @@ const createdVariablesPromises = setupVariables.reduce((allVariablePromises, var
 ], [])
 
 const prepareFiles = () => download(url, '.temp', {extract: true, filename: "confy"})
-    .catch(err => console.error("Could not download the template", err))
+    .catch(err => {
+        console.error("Could not download the template", err)
+        throw err
+    })
 
-prepareFiles()
+const prepareFilesFromPath = () => fs.copy(program.template, `.temp/${directoryName}/packages/template`)
+    .then(() => console.log("tesast"))
+    .catch(err => {
+        console.error("Could not copy the template", err)
+        throw err
+    })
+
+;(program.template ? prepareFilesFromPath : prepareFiles)()
     .then(() => Promise.all(createdVariablesPromises))
     .then(variables => {
         rl.close()
@@ -95,4 +118,3 @@ prepareFiles()
     .then(() => console.log('done'))
     .catch(err => console.error("Could not create the project.", err))
     .then(() => fs.remove("./.temp"))
-

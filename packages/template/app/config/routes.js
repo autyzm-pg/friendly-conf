@@ -4,40 +4,34 @@ import MainPage from "../pages/MainPage"
 import CreatorPage from "../pages/CreatorPage"
 import ConfigurationsPage from "../pages/ConfigurationsPage"
 import {EditPage} from "../pages/EditPage"
-import {WordModel} from "./model"
-import {EnhancedResourcesPage} from "../components/containers/ResourcesPage"
-import {EnhancedResourceCreatorPage} from "../components/resources/ResourceCreatorPage"
-import {WordsWizardView} from "./view"
-import {Text, View} from "native-base"
-import {EnhancedResourceEditPage} from "../components/resources/ResourceEditPage"
+import {View} from "native-base"
 import {BackHandler} from "react-native"
 
 
-const WordLabel = ({item}) => (
-    <View>
-        <Text>{item.name}</Text>
-    </View>
-)
-
-const createResourcePages = (model, WizardView, listPageTitle, ListElementComponent, toString) => {
-    const ResourcePage = EnhancedResourcesPage(model.name, listPageTitle, ListElementComponent, toString)
-    const WizardPage = EnhancedResourceCreatorPage(model.name, WizardView)
-    const EditPage = EnhancedResourceEditPage(model.name, WizardView)
-
-    return [
-        {path: `/resources/${model.name}`, component: ResourcePage},
-        {path: `/creator/resource/${model.name}/:id`, component: EditPage},
-        {path: `/creator/resource/${model.name}`, component: WizardPage}
-    ]
-}
-
-
-const WordsRoutes = createResourcePages(WordModel, WordsWizardView, "Zasoby", WordLabel, res => res.name)
+// const WordLabel = ({item}) => (
+//     <View>
+//         <Text>{item.name}</Text>
+//     </View>
+// )
+//
+// const createResourcePages = (model, WizardView, listPageTitle, ListElementComponent, toString) => {
+//     const ResourcePage = EnhancedResourcesPage(model.name, listPageTitle, ListElementComponent, toString)
+//     const WizardPage = EnhancedResourceCreatorPage(model.name, WizardView)
+//     const EditPage = EnhancedResourceEditPage(model.name, WizardView)
+//
+//     return [
+//         {path: `/resources/${model.name}`, component: ResourcePage},
+//         {path: `/creator/resource/${model.name}/:id`, component: EditPage},
+//         {path: `/creator/resource/${model.name}`, component: WizardPage}
+//     ]
+// }
+// const SomeResourceRoutes = createResourcePages(WordModel, WordsWizardView, "Zasoby", WordLabel, res => res.name)
+const SomeResourceRoutes = []
 
 const BackButtonHandler = withRouter(class BackButtonHandler extends React.Component {
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', () => {
-            if(this.props.history.index > 0) {
+            if (this.props.history.index > 0) {
                 this.props.history.goBack()
                 return true
             }
@@ -54,7 +48,7 @@ export default Router = () =>
     <NativeRouter>
         <BackButtonHandler>
             <Switch>
-                {WordsRoutes.map((props, i) => <Route {...props} key={i}/>)}
+                {SomeResourceRoutes.map((props, i) => <Route {...props} key={i}/>)}
                 <Route exact path="/" component={MainPage}/>
                 <Route path="/configurations" component={ConfigurationsPage}/>
                 <Route path="/creator/:id" component={EditPage}/>

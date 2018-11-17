@@ -6,7 +6,7 @@ import {ScrollView, StyleSheet} from "react-native"
 const styles = StyleSheet.create({
     page: {
         flexDirection: "column",
-        padding: 5,
+        padding: 10,
     }
 })
 

@@ -5,11 +5,9 @@ import appEpics from "./app/epics"
 import appReducer from "./app/reducers"
 import initializers from "./initializersRegister"
 import * as R from "ramda"
-import {createResourcesReducerFromModels} from "./resources/reducers"
-import {WordModel} from "../config/model"
 import {ResourcesEpic, ResourcesReducer} from "./resources"
 
-console.disableYellowBox = true;
+console.disableYellowBox = true
 
 export const reducers = {
     configurations: configurationsReducer,
