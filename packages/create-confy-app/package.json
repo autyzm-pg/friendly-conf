@@ -1,10 +1,10 @@
 {
   "name": "create-confy-app",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "license": "GPL 3.0",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/autyzm-pg/friendly-confy/tree/master/packages/create-confy-app"
+    "type": "git",
+    "url": "https://github.com/autyzm-pg/friendly-confy/tree/master/packages/create-confy-app"
   },
   "dependencies": {
     "commander": "^2.19.0",
