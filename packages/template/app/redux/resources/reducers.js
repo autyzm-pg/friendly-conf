@@ -1,5 +1,5 @@
 import {conditionReducer} from "../../libs/reducers"
-import R, {ifElse} from "ramda"
+import R, {F, ifElse, isEmpty} from "ramda"
 import {resourcesActionTypes} from "./actions"
 import {combineReducers} from "redux"
 
