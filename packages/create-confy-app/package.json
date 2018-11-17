@@ -1,0 +1,15 @@
+{
+  "name": "create-confy-app",
+  "version": "1.0.1",
+  "dependencies": {
+    "commander": "^2.19.0",
+    "download": "^7.1.0",
+    "fs-extra": "^7.0.0",
+    "glob": "^7.1.3",
+    "ramda": "^0.25.0",
+    "replace-in-file": "^3.4.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

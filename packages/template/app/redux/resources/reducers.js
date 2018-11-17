@@ -1,5 +1,5 @@
-import {conditionReducer, createReducer} from "../../libs/reducers"
-import R from "ramda"
+import {conditionReducer} from "../../libs/reducers"
+import R, {ifElse} from "ramda"
 import {resourcesActionTypes} from "./actions"
 import {combineReducers} from "redux"
 
@@ -16,9 +16,14 @@ const reducerForResourceName = name => conditionReducer(isActionForResourceName(
 
 export const _handlers = handlers
 
-export const createResourcesReducerFromModels = R.pipe(
-    R.map(R.prop('name')),
-    R.map(resourceName => [resourceName, reducerForResourceName(resourceName)]),
-    R.fromPairs,
-    combineReducers
-)
+export const createResourcesReducerFromModels =
+    ifElse(
+        isEmpty,
+        F,
+        R.pipe(
+            R.map(R.prop('name')),
+            R.map(resourceName => [resourceName, reducerForResourceName(resourceName)]),
+            R.fromPairs,
+            combineReducers
+        )
+    )

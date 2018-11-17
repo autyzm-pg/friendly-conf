@@ -1,32 +1,29 @@
 import React from "react"
 
 import {
+    Body,
+    Button as NativeBaseButton,
     Container,
     Content,
+    Footer,
+    FooterTab,
     Header,
-    Body,
-    Title,
-    Button as NativeBaseButton,
-    Text,
-    Tab,
-    Tabs,
-    TabHeading,
     Icon,
     Left,
     Right,
-    Footer,
-    FooterTab, View
+    Tab,
+    TabHeading,
+    Tabs,
+    Text,
+    Title,
+    View
 } from 'native-base'
 
 import {connect} from "react-redux"
-import ToastExt from "../libs/ToastExt"
-import {Modal} from "../components/modal/Modal"
 import {ModeTypes} from "../db/format"
-import {WordModel} from "../config/model"
 import * as R from "ramda"
 import styles from "./mainPageStyles"
 import {withStyle} from "../libs/withStyle"
-import {Linking} from "react-native"
 
 const buttonStyles = {
     height: 60,
@@ -65,15 +62,10 @@ const MainPage = ({history, location, activeConfig, hasAnyConfig}) => (
                     }}>
                         <Text>Konfiguracje</Text>
                     </Button>
-                    <Button block light onPress={() => {
-                        history.push(`/resources/${WordModel.name}`)
-                    }}>
-                        <Text>Zasoby</Text>
-                    </Button>
                 </View>
                 {/*<Button full light onPress={() => Linking.openURL("expd16bca44a7e84f759fcce334a17cc6ea://")}>*/}
-                    {/*<Text>Przejdź do aplikacji</Text>*/}
-                    {/*<Icon name="arrow-round-forward"/>*/}
+                {/*<Text>Przejdź do aplikacji</Text>*/}
+                {/*<Icon name="arrow-round-forward"/>*/}
                 {/*</Button>*/}
             </View>
         </View>
