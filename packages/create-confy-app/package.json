@@ -1,6 +1,7 @@
 {
   "name": "create-confy-app",
   "version": "1.0.2",
+  "license": "GPL 3.0",
   "dependencies": {
     "commander": "^2.19.0",
     "download": "^7.1.0",
@@ -11,5 +12,6 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "gitHead": "524fd5af64181dc6e68c4166b81e84843fef96d4"
 }

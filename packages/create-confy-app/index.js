@@ -20,7 +20,7 @@ process.on('exit', () => {
     }
 })
 
-const version = "1.0.0"
+const version = "1.0.3"
 const url = `https://github.com/autyzm-pg/friendly-confy/archive/v${version}.zip`
 const directoryName = `friendly-confy-${version}`
 
