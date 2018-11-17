@@ -1,6 +1,6 @@
 {
   "name": "create-confy-app",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "dependencies": {
     "commander": "^2.19.0",
     "download": "^7.1.0",
