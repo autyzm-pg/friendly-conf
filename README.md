@@ -28,8 +28,8 @@ The database's JSON has the following structure:
     },
     "tables": {
         "configs": [ // list of user's configurations
-            "id": <config's id>,
-            "name": <config's name>,
+            "id": <config id>,
+            "name": <config name>,
             "config": { // json's object with the shape specified in model.js file
                 ...
             },
@@ -65,7 +65,7 @@ The model will be used by the Friendly Confy framework to create controls for fi
 
 In order to create a UI for the wizard, which will be used by end users in order to create new configurations, you should edit the `app/config/view.js` file.
 
-```
+```javascript
 import {ConfigurationModel} from "./model"
 import {WizardStep, WizardView} from "../libs/confy/views/wizard/wizardView"
 import {Column, ColumnView} from "../libs/confy/views/column/columnView"
