@@ -13,5 +13,8 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "524fd5af64181dc6e68c4166b81e84843fef96d4"
+  "bin": {
+    "create-confy-app": "./index.js"
+  },
+  "gitHead": "94f7984e8e08b9af4a7323f69b4a5b4316c8b98d"
 }
