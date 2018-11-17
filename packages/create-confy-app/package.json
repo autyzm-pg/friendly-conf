@@ -1,6 +1,6 @@
 {
   "name": "create-confy-app",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "license": "GPL 3.0",
   "dependencies": {
     "commander": "^2.19.0",
